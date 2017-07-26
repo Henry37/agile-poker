@@ -36,8 +36,21 @@ function refresh(){
         var points = data.points;
         if(points){
             $("ul.others").html("");
-            for(var name in points){
-                addOthers(name, points[name]);
+            var myname = $(".main .l .name").text();
+            var mypoint = $(".main .l .point").text();
+            if($(".main .l.poker").hasClass("observer")){
+                for(var name in points){
+                    addOthers(name, points[name]);
+                }
+            }else if(points[myname] === "?" || mypoint === "?" || typeof points[myname] === "undefined"){
+                for(var name in points){
+                    addOthers(name, "?");
+                }
+                $(".main .l .point").text("?");
+            }else{
+                for(var name in points){
+                    addOthers(name, points[name]);
+                }
             }
         }
     });
@@ -98,9 +111,24 @@ function login(){
         $(".main .l .name").text(user);
         $(".msg").fadeOut();
         $(".mask").fadeOut();
+        $.post("info.php", {
+            name: $(".main .l .name").text(),
+            points: "?",
+            method: "set"
+        }, function(data){
+           
+        });
     }else{
         $(".msg .content").css("color", "orange");
     }
+}
+
+function observe(){
+    $(".main .l .name").text("Observer");
+    $(".msg").fadeOut();
+    $(".mask").fadeOut();
+    $(".second .poker.m").addClass("disabled");
+    $(".main .l.poker").addClass("disabled observer");
 }
 
 $(document).ready(function(){
@@ -110,6 +138,9 @@ $(document).ready(function(){
         e.preventDefault();
         e.stopPropagation();
         var self = $(this);
+        if(self.hasClass("disabled")){
+            return;
+        }
         self.find(".point").text("?");
         setPoints();
     });
@@ -118,6 +149,9 @@ $(document).ready(function(){
         e.preventDefault();
         e.stopPropagation();
         var self = $(this);
+        if(self.hasClass("disabled")){
+            return;
+        }
         var point = self.find(".point").text();
         $(".poker.l .point").text(point);
         setPoints();
@@ -140,6 +174,12 @@ $(document).ready(function(){
         e.preventDefault();
         e.stopPropagation();
         login();
+    });
+
+    $(".msg .msg-ob").on("click", function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        observe();
     });
 
     $(".msg input").on("keyup", function(e){
