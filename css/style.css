@@ -130,15 +130,19 @@ li{
     line-height: 50px;
     font-weight: bold;
     text-align: center;
-    display: inline-block;
     color: #fff;
     background: orange;
     cursor: pointer;
     border-radius: 5px;
+    display: none;
 }
 
 .operations span:hover{
     opacity: 0.7;
+}
+
+.observer.operations span{
+    display: inline-block;
 }
 
 .mask{
