@@ -129,6 +129,7 @@ function observe(){
     $(".mask").fadeOut();
     $(".second .poker.m").addClass("disabled");
     $(".main .l.poker").addClass("disabled observer");
+    $(".operations").addClass("observer");
 }
 
 $(document).ready(function(){
