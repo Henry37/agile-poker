@@ -29,7 +29,7 @@ function addOthers(name, point){
 }
 
 function refresh(){
-    $.post("info.php", {
+    $.post("apps/info.php", {
         method: "get"
     }, function(data){
         var data = JSON.parse(data);
@@ -61,7 +61,7 @@ function refresh(){
 }
 
 function setPoints(){
-    $.post("info.php", {
+    $.post("apps/info.php", {
         name: $(".main .l .name").text(),
         points: $(".main .l .point").text(),
         method: "set"
@@ -78,7 +78,7 @@ function setPoints(){
 }
 
 function resetPoints(){
-    $.post("info.php", {
+    $.post("apps/info.php", {
         method: "reset"
     }, function(data){
         var data = JSON.parse(data);
@@ -93,7 +93,7 @@ function resetPoints(){
 }
 
 function clearPoints(){
-    $.post("info.php", {
+    $.post("apps/info.php", {
         method: "clear"
     }, function(data){
         var data = JSON.parse(data);
@@ -111,7 +111,7 @@ function login(){
         $(".main .l .name").text(user);
         $(".msg").fadeOut();
         $(".mask").fadeOut();
-        $.post("info.php", {
+        $.post("apps/info.php", {
             name: $(".main .l .name").text(),
             points: "?",
             method: "set"

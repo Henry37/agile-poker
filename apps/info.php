@@ -1,4 +1,5 @@
 <?php
+    require ("conn.php");
     function json_to_array($data){
         $arr = array();
         if(is_array($data) || is_object($data)){
@@ -62,6 +63,8 @@
         fclose($file);
     }
 
-    echo $jsonStr;
+
+    get_room_info($SERVER, $USER, $PASSWORD, $DATABASE, $TABLE);
+    //echo $jsonStr;
 
 ?>
