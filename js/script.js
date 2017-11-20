@@ -33,7 +33,7 @@ function refresh(){
         method: "get"
     }, function(data){
         var data = JSON.parse(data);
-        var points = data.points;
+        var points = JSON.parse(data.points);
         if(points){
             $("ul.others").html("");
             var myname = $(".main .l .name").text();

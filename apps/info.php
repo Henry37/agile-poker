@@ -20,10 +20,10 @@
     $jsonObj = json_decode($jsonStr);
     $jsonArr = json_to_array($jsonObj);
     fclose($file);
-
     //dispatcher
     if($_POST["method"] == "get"){
-
+        $roomId = $_POST["roomId"] || 1;
+        get_room_info($roomId, $SERVER, $USER, $PASSWORD, $DATABASE, $TABLE);
     }else if($_POST["method"] == "set"){
         $existName = FALSE;
         foreach($jsonArr["points"] as $name => $points){
@@ -62,9 +62,4 @@
         fwrite($file, $jsonStr);
         fclose($file);
     }
-
-
-    get_room_info($SERVER, $USER, $PASSWORD, $DATABASE, $TABLE);
-    //echo $jsonStr;
-
 ?>
