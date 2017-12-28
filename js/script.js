@@ -1,5 +1,5 @@
 function init(){
-    var points = [1, 2, 3, 5, 8, 11, 13];
+    var points = [1, 2, 3, 5, 8, 13, "?"];
     var inHTML = '';
     for(var i = 0; i < points.length; i++){
         inHTML += '<li>';
@@ -30,26 +30,22 @@ function addOthers(name, point){
 
 function refresh(){
     $.post("apps/info.php", {
-        method: "get"
+        method: "get",
+        roomId: "1"
     }, function(data){
         var data = JSON.parse(data);
-        var points = JSON.parse(data.points);
-        if(points){
+        if(data && data.length){
             $("ul.others").html("");
             var myname = $(".main .l .name").text();
             var mypoint = $(".main .l .point").text();
-            if($(".main .l.poker").hasClass("observer")){
-                for(var name in points){
-                    addOthers(name, points[name]);
-                }
-            }else if(points[myname] === "?" || mypoint === "?" || typeof points[myname] === "undefined"){
-                for(var name in points){
+            for(var i = 0; i < data.length; i++){
+                var name = data[i].member;
+                var point = data[i].point;
+                if( mypoint === "?" || (name === myname && point === "?") || typeof point === "undefined"){
                     addOthers(name, "?");
-                }
-                $(".main .l .point").text("?");
-            }else{
-                for(var name in points){
-                    addOthers(name, points[name]);
+                    $(".main .l .point").text("?");
+                }else{
+                    addOthers(name, point);
                 }
             }
         }
@@ -64,6 +60,7 @@ function setPoints(){
     $.post("apps/info.php", {
         name: $(".main .l .name").text(),
         points: $(".main .l .point").text(),
+        roomId: "1",
         method: "set"
     }, function(data){
         var data = JSON.parse(data);

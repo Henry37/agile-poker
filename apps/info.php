@@ -13,53 +13,18 @@
         }
         return $arr;
     }
-    //init data
-    $fileName = "points.json";
-    $file = fopen($fileName, "r") or die("Unable to read such file");
-    $jsonStr = fread($file, filesize($fileName));
-    $jsonObj = json_decode($jsonStr);
-    $jsonArr = json_to_array($jsonObj);
-    fclose($file);
     //dispatcher
     if($_POST["method"] == "get"){
-        $roomId = $_POST["roomId"] || 1;
-        get_room_info($roomId, $SERVER, $USER, $PASSWORD, $DATABASE, $TABLE);
+        $roomId = $_POST["roomId"];
+        echo(get_room_info($roomId));
     }else if($_POST["method"] == "set"){
-        $existName = FALSE;
-        foreach($jsonArr["points"] as $name => $points){
-            if($name == $_POST["name"]){
-                $jsonArr["points"][$name] = $_POST["points"];
-                $existName = TRUE;
-            }
-        }
-        if(!$existName){
-            if($jsonArr["online"] < 8){
-                $jsonArr["points"][$_POST["name"]] = $_POST["points"];
-                $jsonArr["online"] ++;
-            }
-        }
-        $file = fopen($fileName, "w+") or die("Unable to read such file");
-        $jsonStr = json_encode($jsonArr);
-        fwrite($file, $jsonStr);
-        fclose($file);
+        $roomId = $_POST["roomId"];
+        $points = $_POST["points"];
+        $name = $_POST["name"];
+        set_room_info($roomId, $name, $points);
     }else if($_POST["method"] == "reset"){
-        foreach($jsonArr as $key => $value){
-            if($key == "points"){
-                foreach($jsonArr["points"] as $name => $points){
-                    $jsonArr["points"][$name] = "?";
-                }
-            }
-        }
-        $file = fopen($fileName, "w+") or die("Unable to read such file");
-        $jsonStr = json_encode($jsonArr);
-        fwrite($file, $jsonStr);
-        fclose($file);
+
     }else if($_POST["method"] == "clear"){
-        $jsonArr["points"] = [];
-        $jsonArr["online"] = 0;
-        $file = fopen($fileName, "w+") or die("Unable to read such file");
-        $jsonStr = json_encode($jsonArr);
-        fwrite($file, $jsonStr);
-        fclose($file);
+
     }
 ?>
